@@ -67,19 +67,20 @@ global $connection;
 $u_id = $_POST["u_id"];
 $u_long = $_POST["u_long"]; 
 $u_lat = $_POST["u_lat"];
-$yk_points =  $_POST["yk_points"];
+// $yk_points =  $_POST["yk_points"];
 
 
 $query = "INSERT INTO user
 			 SET
-				 u_id='{$u_id}', u_long='{$u_long}', u_lat='{$u_lat}', yk_points={$yk_points}
+				 u_id='{$u_id}', u_long='{$u_long}', u_lat='{$u_lat}'
 				 ON DUPLICATE KEY UPDATE
 u_long = '{$u_long}',
 u_lat = '{$u_lat}'";
 		
 		if(mysqli_query($connection, $query)){
 			$response=array(
-				'status' => 1,
+				'status' => TRUE,
+				'u_id' => $u_id,
 				'status_message' =>'User Added Successfully.'
 				
 			);

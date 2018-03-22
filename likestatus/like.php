@@ -8,32 +8,37 @@
 		
 		case 'POST':
 			// Insert Product
-			insert_post();
+			insert_like();
 			break;
 		
 	}
 
-function insert_post(){
+function insert_like(){
 global $connection;
+// $L_id = 0;
+// $c_id = $_POST["c_id"];
 $p_id = $_POST["p_id"];
 $u_id = $_POST["u_id"];
-$p_text = $_POST["p_text"];
-$p_area = $_POST["p_area"];
-$p_long = $_POST["p_long"]; 
-$p_lat = $_POST["p_lat"];
+// $like_status = $_POST["like_status"];
 
 
-$query = "INSERT INTO post
+$query = "INSERT INTO likes
 			 SET
-			p_id=0, u_id='{$u_id}', p_text='{$p_text}', p_area='{$p_area}', p_long='{$p_long}', p_lat='{$p_lat}'";
+		L_id= 0, p_id={$p_id}, u_id='{$u_id}', like_status= 1";
 			
+// $query1 = "SET @v1 := (SELECT u_id from post WHERE p_id = {$p_id})
 $query1 = "UPDATE user
-			SET yk_points= yk_points + 2 WHERE u_id='{$u_id}'";
+			SET yk_points= yk_points + 1 WHERE u_id= (SELECT u_id from post WHERE p_id = {$p_id})";
+			
+
+			
+// $query1 = "UPDATE user
+			// SET yk_points= yk_points + 2 WHERE u_id='{$u_id}'";
 		
 		if(mysqli_query($connection, $query)){
 			$response=array(
 				'status' => 1,
-				'status_message' =>'Post Added Successfully.'
+				'status_message' =>'Like Marked Successfully.'
 				
 			);
 			echo $query;
@@ -42,7 +47,7 @@ $query1 = "UPDATE user
 		{
 			$response=array(
 				'status' => 0,
-				'status_message' =>'Post Addition Failed.'
+				'status_message' =>'Like Mark Failed.'
 			);
 			echo $query;
 		}
@@ -50,7 +55,7 @@ $query1 = "UPDATE user
 		if(mysqli_query($connection, $query1)){
 			$response=array(
 				'status' => 1,
-				'status_message' =>'Points Added Successfully.'
+				'status_message' =>'points added Successfully.'
 				
 			);
 			echo $query;
@@ -59,7 +64,7 @@ $query1 = "UPDATE user
 		{
 			$response=array(
 				'status' => 0,
-				'status_message' =>'Points Addition Failed.'
+				'status_message' =>'points adding Failed.'
 			);
 			echo $query;
 		}

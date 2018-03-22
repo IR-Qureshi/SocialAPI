@@ -8,32 +8,28 @@
 		
 		case 'POST':
 			// Insert Product
-			insert_post();
+			insert_comment();
 			break;
 		
 	}
 
-function insert_post(){
+function insert_comment(){
 global $connection;
 $p_id = $_POST["p_id"];
-$u_id = $_POST["u_id"];
-$p_text = $_POST["p_text"];
-$p_area = $_POST["p_area"];
-$p_long = $_POST["p_long"]; 
-$p_lat = $_POST["p_lat"];
+$comments = $_POST["comments"];
 
-
-$query = "INSERT INTO post
+$query = "INSERT INTO comments
 			 SET
-			p_id=0, u_id='{$u_id}', p_text='{$p_text}', p_area='{$p_area}', p_long='{$p_long}', p_lat='{$p_lat}'";
+			c_id=0, p_id='{$p_id}', comments='{$comments}'";
 			
 $query1 = "UPDATE user
-			SET yk_points= yk_points + 2 WHERE u_id='{$u_id}'";
+			SET yk_points= yk_points + 2 WHERE u_id= (SELECT u_id from post WHERE p_id = {$p_id})";
+			
 		
 		if(mysqli_query($connection, $query)){
 			$response=array(
 				'status' => 1,
-				'status_message' =>'Post Added Successfully.'
+				'status_message' =>'New Comment Added Successfully.'
 				
 			);
 			echo $query;
@@ -42,15 +38,14 @@ $query1 = "UPDATE user
 		{
 			$response=array(
 				'status' => 0,
-				'status_message' =>'Post Addition Failed.'
+				'status_message' =>'Comment Addition Failed.'
 			);
 			echo $query;
 		}
-		
 		if(mysqli_query($connection, $query1)){
 			$response=array(
 				'status' => 1,
-				'status_message' =>'Points Added Successfully.'
+				'status_message' =>'points added Successfully.'
 				
 			);
 			echo $query;
@@ -59,7 +54,7 @@ $query1 = "UPDATE user
 		{
 			$response=array(
 				'status' => 0,
-				'status_message' =>'Points Addition Failed.'
+				'status_message' =>'points adding Failed.'
 			);
 			echo $query;
 		}
@@ -67,7 +62,5 @@ $query1 = "UPDATE user
 		echo json_encode($response);
 	
 }
-
-	
-				 
+		 
 ?>
